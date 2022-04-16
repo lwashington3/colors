@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 with open("README.md", 'r') as f:
-	long_description = fh.read()
+	long_description = f.read()
 
 
 project_name = "colors"
