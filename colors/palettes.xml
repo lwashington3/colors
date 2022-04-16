@@ -1,0 +1,38 @@
+<resources>
+	<array name="Purples">
+		<color>#4b72ff</color>
+		<color>#f791518</color>
+		<color>#f8b551</color>
+		<color>#fffbf4</color>
+	</array>
+	<array name="Mineral">
+		<color>#111111</color>
+		<color>#2f2f2f</color>
+		<color>#f6f6f6</color>
+		<color>#ffcb74</color>
+	</array>
+	<array name="Designer">
+		<color>#000000</color>
+		<color>#ffe6bc</color>
+		<color>#f7f1ea</color>
+		<color>#ffffff</color>
+	</array>
+	<array name="Pop">
+		<color>#b38b59</color>
+		<color>#113e21</color>
+		<color>#f0f0f0</color>
+		<color>#fefefe</color>
+	</array>
+	<array name="Medieval">
+		<color>#1c1c1c</color>
+		<color>#302a18</color>
+		<color>#fde4c3</color>
+		<color>#f6f6f6</color>
+	</array>
+	<array name="News">
+		<color>#3b3b3b</color>
+		<color>#050206</color>
+		<color>#9a8174</color>
+		<color>#ffffff</color>
+	</array>
+</resources>
