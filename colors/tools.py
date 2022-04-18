@@ -3,7 +3,7 @@ from .gradient import Gradient
 from .color_list import ColorList
 
 
-def convert_color(color:str|Color|ColorList) -> str:
+def convert_color(color:str | Color | ColorList) -> str:
 	if isinstance(color, Color):
 		return color.get_rgba()
 	elif isinstance(color, ColorList):

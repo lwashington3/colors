@@ -229,7 +229,7 @@ class Color(object):  # TODO: Implement __format__
 class Colors(dict):
 	def __init__(self, *args):
 		super().__init__()
-		self.populate_from_xml(*args)
+		self.populate_from_xml(list(args))
 
 	def __getattribute__(self, item):
 		try:
