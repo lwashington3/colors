@@ -227,9 +227,9 @@ class Color(object):  # TODO: Implement __format__
 
 
 class Colors(dict):
-	def __init__(self):
+	def __init__(self, *args):
 		super().__init__()
-		self.populate_from_xml()
+		self.populate_from_xml(*args)
 
 	def __getattribute__(self, item):
 		try:
@@ -237,24 +237,27 @@ class Colors(dict):
 		except KeyError:
 			return self[item.lower().replace("_", " ")]
 
-	def populate_from_xml(self):
-		file = minidom.parse(join(dirname(realpath(__file__)), "colors.xml"))
-		colors = file.getElementsByTagName("resources")
-		for color in colors[0].childNodes:
-			if color.nodeName == "color":
-				name = color.attributes["name"].value
-				value = Color(rgba=color.firstChild.nodeValue, name=name)
-				self[name] = value
-				setattr(Colors, name.upper(), value)
-			elif color.nodeName == "array":
-				lst = []
-				name = color.attributes["name"].value
-				for index in color.childNodes:
-					if index.nodeName == "color":
-						value = Color(rgba=index.firstChild.nodeValue, name=name)
-						lst.append(value)
-				self[name] = lst
-				setattr(Colors, name.upper(), lst)
-
-
-colors = Colors()
+	def populate_from_xml(self, file_paths:list = None):
+		default = join(dirname(realpath(__file__)), "colors.xml")
+		if file_paths is None:
+			file_paths = [default]
+		else:
+			file_paths.insert(0, default)
+		for file in file_paths:
+			file = minidom.parse(file)
+			colors = file.getElementsByTagName("resources")
+			for color in colors[0].childNodes:
+				if color.nodeName == "color":
+					name = color.attributes["name"].value
+					value = Color(rgba=color.firstChild.nodeValue, name=name)
+					self[name] = value
+					setattr(Colors, name.upper(), value)
+				elif color.nodeName == "array":
+					lst = []
+					name = color.attributes["name"].value
+					for index in color.childNodes:
+						if index.nodeName == "color":
+							value = Color(rgba=index.firstChild.nodeValue, name=name)
+							lst.append(value)
+					self[name] = lst
+					setattr(Colors, name.upper(), lst)
