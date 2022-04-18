@@ -1,10 +1,9 @@
 from .color import Color
 from .color_list import ColorList
-from matplotlib.colors import ListedColormap
 
 
 class Gradient(ColorList):  # TODO: Implement gradient through lch
-    def __init__(self, color1:Color, color2:Color, steps:int=7):
+    def __init__(self, color1:Color, color2:Color, steps:int = 7):
         super().__init__()
         self._recalculate = False
         self.color1 = color1
@@ -67,12 +66,6 @@ class Gradient(ColorList):  # TODO: Implement gradient through lch
             alpha = self.color1.alpha + ((i/steps) * (self.color2.alpha - self.color1.alpha))
             self._gradient_list.append(Color(red, green, blue, alpha))
         self._gradient_list.append(self.color2)
-
-    def rgba_list(self) -> list[Color]:
-        return [i.get_rgba() for i in self]
-
-    def as_colormap(self) -> ListedColormap:
-        return ListedColormap(self.rgba_list())
 
     def __len__(self):
         return self.steps
