@@ -54,6 +54,10 @@ class Color(object):  # TODO: Implement __format__
 		return int(value)
 
 	@property
+	def is_dark(self):
+		return ((self.red * .2126) + (self.green * .7152) + (self.blue * .0722)) < 0.5
+
+	@property
 	def red(self):
 		return self._red
 
