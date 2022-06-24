@@ -4,7 +4,7 @@ from os.path import dirname, realpath, join
 from xml.dom import minidom
 
 
-class Color(object):  # TODO: Implement __format__
+class Color(object):
 	"""
 	A base to keep colors standard
 	"""
@@ -24,7 +24,7 @@ class Color(object):  # TODO: Implement __format__
 			self._hue, self._saturation, self._visibility = rgb_to_hsv(red, green, blue)
 
 		elif "rgba" in kwargs.keys():
-			match = search(r"#?([0-9a-f]{1,2})([0-9a-f]{1,2})([0-9a-f]{1,2})([0-9a-f]{1,2})?", kwargs["rgba"])
+			match = search(r"#?([\da-f]{1,2})([\da-f]{1,2})([\da-f]{1,2})([\da-f]{1,2})?", kwargs["rgba"])
 			if match is None:
 				raise ValueError(f"The given RGB(A) code is not valid: {kwargs['rgba']}")
 			self.red = int(match.group(1), base=16)
@@ -40,6 +40,8 @@ class Color(object):  # TODO: Implement __format__
 			self._hue = hue
 			self._saturation = saturation
 			self._visibility = visibility
+		if not hasattr(self, "_hue"):
+			self.hue, self.saturation, self.visibility = rgb_to_hsv(self.red, self.green, self.blue)
 		self._recalculate = True
 		self.name = kwargs.get("name", None)
 
@@ -159,7 +161,8 @@ class Color(object):  # TODO: Implement __format__
 
 	@hue.setter
 	def hue(self, hue):
-		self.red, self.green, self.blue = hsv_to_rgb(hue, self.saturation, self.visibility)
+		if self._recalculate:
+			self.red, self.green, self.blue = hsv_to_rgb(hue, self.saturation, self.visibility)
 		self._hue = hue
 
 	@property
@@ -168,7 +171,8 @@ class Color(object):  # TODO: Implement __format__
 
 	@saturation.setter
 	def saturation(self, saturation):
-		self.red, self.green, self.blue = hsv_to_rgb(self.hue, saturation, self.visibility)
+		if self._recalculate:
+			self.red, self.green, self.blue = hsv_to_rgb(self.hue, saturation, self.visibility)
 		self._saturation = saturation
 
 	@property
@@ -177,7 +181,8 @@ class Color(object):  # TODO: Implement __format__
 
 	@visibility.setter
 	def visibility(self, visibility):
-		self.red, self.green, self.blue = hsv_to_rgb(self.hue, self.saturation, visibility)
+		if self._recalculate:
+			self.red, self.green, self.blue = hsv_to_rgb(self.hue, self.saturation, visibility)
 		self._visibility = visibility
 
 	@property
@@ -224,6 +229,31 @@ class Color(object):  # TODO: Implement __format__
 
 	def __str__(self):
 		return f"Color: {self.get_rgba()} Red: {self.red}\t Green: {self.green}\t Blue: {self.blue}\t Alpha: {self.alpha}"
+
+	def __format__(self, fmt:str) -> str:
+		"""
+		Formats the given string with information about the class:
+
+		Use %R, %G, %B, %A to fill in the respective hexadecimal values for the object.
+		Use %r, %g, %b, %a to fill in the respective integer values (0-255) for the object.
+		Use %h, %s, %v to fill in the respective HSV values.
+		Use %n to fill in the name of the color object, if it's provided at some point. If there is no name, %n will be replaced with nothing.
+		"""
+		return fmt.replace("%R", self.red_hex)\
+			.replace("%G", self.green_hex)\
+			.replace("%B", self.blue_hex)\
+			.replace("%A", self.alpha_hex)\
+			.replace("%r", f"{self.red}")\
+			.replace("%g", f"{self.green}")\
+			.replace("%b", f"{self.blue}")\
+			.replace("%a", f"{self.alpha}")\
+			.replace("%h", f"{self.hue}")\
+			.replace("%s", f"{self.saturation}")\
+			.replace("%v", f"{self.visibility}")\
+			.replace("%n", self.name if self.name else "")
+
+	def __hash__(self):
+		return hash((self.red, self.green, self.blue, self.alpha))
 
 
 class Colors(dict):
