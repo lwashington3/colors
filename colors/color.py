@@ -258,6 +258,13 @@ class Color(object):
 	def __hash__(self):
 		return hash((self.red, self.green, self.blue, self.alpha))
 
+	def copy(self):
+		"""
+		Creates a new color object with the same information as this object
+		:rtype Color:
+		"""
+		return Color(self.r, self.g, self.b, self.a)
+
 
 class Colors(dict):
 	def __init__(self, *args):
