@@ -199,6 +199,9 @@ class Color(object):
 	def toHex(color):
 		return str(hex(color))[2:].zfill(2)
 
+	def __hex__(self):
+		return self.get_rgba()
+
 	def __eq__(self, other):
 		if isinstance(other, Color):
 			return self.red == other.red and self.green == other.green and self.blue == other.blue and self.alpha == self.alpha

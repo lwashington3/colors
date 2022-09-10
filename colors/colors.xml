@@ -17,6 +17,7 @@
 	<color name="cadet_blue">#5f9ea0ff</color>
 	<color name="chartreuse">#7fff00ff</color>
 	<color name="chocolate">#d2691eff</color>
+	<color name="cloud_gray_2">#dddfe8ff</color>
 	<color name="coral">#ff7f50ff</color>
 	<color name="corn_flower_blue">#6495edff</color>
 	<color name="cornsilk">#fff8dcff</color>
@@ -142,6 +143,12 @@
 	<color name="white_smoke">#f5f5f5ff</color>
 	<color name="yellow">#ffff00ff</color>
 	<color name="yellow_green">#9acd32ff</color>
+	<array name="PAN_AFRICAN">
+		<color name="RED">#e31c23ff</color>
+		<color name="BLACK">#000000ff</color>
+		<color name="GREEN">#00843eff</color>
+		<color name="YELLOW">#f9cc00ff</color>
+	</array>
 	<array name="GOOGLE_SHEETS">
 		<color name="FIRST">#4285f4ff</color>
 		<color name="SECOND">#ea4335ff</color>
