@@ -263,7 +263,7 @@ class Color(object):
 		Creates a new color object with the same information as this object
 		:rtype Color:
 		"""
-		return Color(self.r, self.g, self.b, self.a)
+		return Color(self.red, self.green, self.blue, self.alpha)
 
 
 class Colors(dict):
