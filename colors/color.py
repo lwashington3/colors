@@ -155,7 +155,7 @@ class Color(object):
 
 	@property
 	def rgba(self):
-		return self.get_rgb() + self.alpha_hex
+		return self.rgb + self.alpha_hex
 
 	@property
 	def hue(self):
