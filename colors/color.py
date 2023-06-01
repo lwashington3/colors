@@ -24,7 +24,7 @@ class Color(object):
 			self._hue, self._saturation, self._visibility = rgb_to_hsv(red, green, blue)
 
 		elif "rgba" in kwargs.keys():
-			match = search(r"#?([\da-f]{1,2})([\da-f]{1,2})([\da-f]{1,2})([\da-f]{1,2})?", kwargs["rgba"])
+			match = search(r"#?([\da-f]{1,2})([\da-f]{1,2})([\da-f]{1,2})([\da-f]{1,2})?", kwargs["rgba"].lower())
 			if match is None:
 				raise ValueError(f"The given RGB(A) code is not valid: {kwargs['rgba']}")
 			self.red = int(match.group(1), base=16)
@@ -149,10 +149,12 @@ class Color(object):
 		value = int(hexadecimal, base=16)
 		self.alpha = value
 
-	def get_rgb(self):
+	@property
+	def rgb(self):
 		return f"#{self.red_hex}{self.green_hex}{self.blue_hex}"
 
-	def get_rgba(self):
+	@property
+	def rgba(self):
 		return self.get_rgb() + self.alpha_hex
 
 	@property
@@ -200,12 +202,15 @@ class Color(object):
 		return str(hex(color))[2:].zfill(2)
 
 	def __hex__(self):
-		return self.get_rgba()
+		return self.rgba
 
 	def __eq__(self, other):
-		if isinstance(other, Color):
-			return self.red == other.red and self.green == other.green and self.blue == other.blue and self.alpha == self.alpha
-		return False
+		if not isinstance(other, Color):
+			try:
+				other = Color(other)
+			except:
+				return False
+		return self.red == other.red and self.green == other.green and self.blue == other.blue and self.alpha == self.alpha
 
 	def __ne__(self, other):
 		return not self == other
@@ -230,8 +235,11 @@ class Color(object):
 	def __repr__(self):
 		return f"Color(red={self.red}, green={self.green}, blue={self.blue}, alpha={self.alpha})"
 
+	def __int__(self):
+		return int(self.red_hex + self.green_hex + self.blue_hex, 16)
+
 	def __str__(self):
-		return f"Color: {self.get_rgba()} Red: {self.red}\t Green: {self.green}\t Blue: {self.blue}\t Alpha: {self.alpha}"
+		return f"Color: {self.rgba} Red: {self.red}\t Green: {self.green}\t Blue: {self.blue}\t Alpha: {self.alpha}"
 
 	def __format__(self, fmt:str) -> str:
 		"""
@@ -257,6 +265,10 @@ class Color(object):
 
 	def __hash__(self):
 		return hash((self.red, self.green, self.blue, self.alpha))
+
+	def __iter__(self):
+		for i in (self.red, self.green, self.blue, self.alpha):
+			yield i
 
 	def copy(self):
 		"""

@@ -1,2 +1,6 @@
 .idea/
 colors/venv/
+
+.gitignore
+colors/triangles.xml
+colors/ite.xml

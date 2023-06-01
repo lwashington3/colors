@@ -1,6 +1,5 @@
 from .color import Color
 from abc import ABC, abstractmethod
-from matplotlib.colors import ListedColormap
 
 
 class ColorList(ABC):
@@ -10,10 +9,17 @@ class ColorList(ABC):
 		pass
 
 	def rgba_list(self) -> list[Color]:
-		return [i.get_rgba() for i in self]
+		return [i.rgba for i in self]
 
-	def as_colormap(self) -> ListedColormap:
-		return ListedColormap(self.rgba_list())
+	def as_mpl_colormap(self) -> ListedColormap:
+		"""
+		:returns: matplotlib.colors.ListedColormap
+		"""
+		try:
+			from matplotlib.colors import ListedColormap
+			return ListedColormap(self.rgba_list())
+		except ModuleNotFoundError as e:
+			raise ModuleNotFoundError("This function requires the matplotlib library. Please run `pip install matplotlib` and try again.")
 
 	def __iter__(self):
 		return iter(self.color_list)

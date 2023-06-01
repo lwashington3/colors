@@ -12,6 +12,9 @@ class Gradient(ColorList):  # TODO: Implement gradient through lch
         self._recalculate = True
         self._calculate_gradient_list()
 
+    def __getitem__(self, item):
+        return self._gradient_list[item]
+
     @property
     def color1(self) -> Color:
         return self._color1

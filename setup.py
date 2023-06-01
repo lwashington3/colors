@@ -6,14 +6,13 @@ with open("README.md", 'r') as f:
 
 
 project_name = "colors"
-git_url = "https://github.com/lwashington3/colors"
+git_url = f"https://github.com/lwashington3/{project_name}"
 
 
 setup(
 	name=project_name,
-	version="1.0.10",
+	version="1.1.0b0",
 	author="Len Washington III",
-	author_email="l.washingtoniii.27@gmail.com",
 	description="Custom Colors module",
 	include_package_data=True,
 	long_description=long_description,
@@ -24,5 +23,4 @@ setup(
 	},
 	license="MIT",
 	packages=[project_name],
-	install_requires=["matplotlib"]
 )
