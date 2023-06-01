@@ -11,7 +11,7 @@ class ColorList(ABC):
 	def rgba_list(self) -> list[Color]:
 		return [i.rgba for i in self]
 
-	def as_mpl_colormap(self) -> ListedColormap:
+	def as_mpl_colormap(self):
 		"""
 		:returns: matplotlib.colors.ListedColormap
 		"""
