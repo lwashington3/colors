@@ -11,7 +11,7 @@ git_url = f"https://github.com/lwashington3/{project_name}"
 
 setup(
 	name=project_name,
-	version="1.1.0b2",
+	version="1.2.0b0",
 	author="Len Washington III",
 	description="Custom Colors module",
 	include_package_data=True,

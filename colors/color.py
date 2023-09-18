@@ -233,7 +233,7 @@ class Color(object):
 			return TypeError(f"unsupported operand type(s) for +: 'Color' and '{other.__name__}'")
 
 	def __repr__(self):
-		return f"Color(red={self.red}, green={self.green}, blue={self.blue}, alpha={self.alpha})"
+		return f"\033[38;2;{self.red};{self.green};{self.blue}mColor(red={self.red}, green={self.green}, blue={self.blue}, alpha={self.alpha})\033[0m"
 
 	def __int__(self):
 		return int(self.red_hex + self.green_hex + self.blue_hex, 16)
@@ -249,8 +249,11 @@ class Color(object):
 		Use %r, %g, %b, %a to fill in the respective integer values (0-255) for the object.
 		Use %h, %s, %v to fill in the respective HSV values.
 		Use %n to fill in the name of the color object, if it's provided at some point. If there is no name, %n will be replaced with nothing.
+		Anything wrapped in %f and %t will have its forecolor as this color. These can be used multiple times, but there must be the same amount.
 		"""
-		return fmt.replace("%R", self.red_hex)\
+		from re import search, sub
+
+		string = fmt.replace("%R", self.red_hex)\
 			.replace("%G", self.green_hex)\
 			.replace("%B", self.blue_hex)\
 			.replace("%A", self.alpha_hex)\
@@ -263,12 +266,44 @@ class Color(object):
 			.replace("%v", f"{self.visibility}")\
 			.replace("%n", self.name if self.name else "")
 
+		starts = search(r"%f", string)
+		ends = search(r"%t", string)
+
+		if starts is not None and ends is not None:
+			if (starts is None) ^ (ends is None):
+				raise ValueError(f"There were a different amount of start characters and end characters for color formatting")
+
+			string = sub("%f", self.termstart, string)
+			string = sub("%t", self.termend, string)
+
+		return string
+
 	def __hash__(self):
 		return hash((self.red, self.green, self.blue, self.alpha))
 
 	def __iter__(self):
 		for i in (self.red, self.green, self.blue, self.alpha):
 			yield i
+
+	@property
+	def termstart(self) -> str:
+		"""
+		Colors the foreground of the terminal with this color.
+		"""
+		return f"\033[38;2;{self.red};{self.green};{self.blue}m"
+
+	@property
+	def termend(self) -> str:
+		"""
+		Returns the foreground color of the terminal to normal.
+		"""
+		return "\033[0m"
+
+	def __enter__(self):
+		return self.termstart
+
+	def __exit__(self, exc_type=None, exc_val=None, exc_tb=None):
+		return self.termend
 
 	def copy(self):
 		"""
