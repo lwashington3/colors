@@ -1,0 +1,16 @@
+name: colors
+
+services:
+    build-package:
+        build:
+            target: "build-package"
+        volumes:
+            - ./dist/:/usr/src/dist
+        command: ["cp", "-avru", "/usr/src/app/dist", "/usr/src"]
+
+    rlpy:
+        build:
+            target: "prod"
+        image: colors:latest
+        volumes:
+            - ./colors:/usr/local/lib/python3.12/site-packages/colors
